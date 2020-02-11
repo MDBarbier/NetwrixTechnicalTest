@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TechnicalTestApp.Database;
 
 namespace TechnicalTestApp
 {
@@ -11,6 +12,11 @@ namespace TechnicalTestApp
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (var client = new DatabaseContext())
+            {                
+                client.Database.EnsureCreated();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -18,7 +24,8 @@ namespace TechnicalTestApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();            
+            services.AddControllersWithViews();
+            services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
