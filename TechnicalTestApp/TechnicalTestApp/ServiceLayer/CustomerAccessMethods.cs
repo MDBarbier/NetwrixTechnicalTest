@@ -2,14 +2,15 @@
 using System.Linq;
 using TechnicalTestApp.Database;
 using TechnicalTestApp.Models;
+using TechnicalTestApp.ViewModels;
 
-namespace TechnicalTestApp.DataAccessLayer
+namespace TechnicalTestApp.ServiceLayer
 {
     public class CustomerAccessMethods
     {
-        private readonly DatabaseContext _myDbContext;
+        private readonly IApplicationDatabaseContext _myDbContext;
 
-        public CustomerAccessMethods(DatabaseContext databaseContext)
+        public CustomerAccessMethods(IApplicationDatabaseContext databaseContext)
         {
             _myDbContext = databaseContext;
         }
@@ -19,36 +20,27 @@ namespace TechnicalTestApp.DataAccessLayer
             return _myDbContext.Customers.Where(customer => customer.CustomerId == customerId).FirstOrDefault();
         }
 
-        public Dictionary<int, CustomerData> GetCustomers()
+        public Dictionary<int, CustomerViewModel> GetCustomers()
         {
             var customers = _myDbContext.Customers.ToList();
-            var customerDataList = new Dictionary<int, CustomerData>();
+            var customerDataList = new Dictionary<int, CustomerViewModel>();
             var invoiceAccessMethods = new InvoiceAccessMethods(_myDbContext);
 
             foreach (var customer in customers)
             {
-                var customerToAdd = new CustomerData();                                
+                var customerToAdd = new CustomerViewModel();                                
                 customerToAdd.Name = customer.Name;
-
-                //Calculate most recent invoice ref
+                
                 customerToAdd.MostRecentInvoiceRef = invoiceAccessMethods.GetMostRecentInvoiceRef(customer.CustomerId);
-
-                //Calculate most recent invoice amount
                 customerToAdd.MostRecentInvoiceAmount = invoiceAccessMethods.GetMostRecentInvoiceAmount(customer.CustomerId);
-
-                //Calculate number of outstanding invoices
                 customerToAdd.NumberOfOutstandingInvoices = invoiceAccessMethods.GetNumberOfOutstandingInvoicesForCustomer(customer.CustomerId);
-
-                //Calculate amount of all outstanding invoices
                 customerToAdd.TotalOfAllOutstandingInvoices = invoiceAccessMethods.GetAmountOwedOnInvoices(customer.CustomerId, false);
-
-                //Calculate total of all paid invoices
                 customerToAdd.TotalOfAllPaidInvoices = invoiceAccessMethods.GetAmountOwedOnInvoices(customer.CustomerId, true);
 
                 customerDataList.Add(customer.CustomerId, customerToAdd);
             }
 
             return customerDataList;
-        }
+        }        
     }
 }

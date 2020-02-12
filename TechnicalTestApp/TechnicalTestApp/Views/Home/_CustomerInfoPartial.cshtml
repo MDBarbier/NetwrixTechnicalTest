@@ -1,0 +1,44 @@
+﻿
+<div class="text-center mt-5">
+
+    <h3>Customer Data</h3>
+
+    <table class="table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Most Recent Invoice Ref</th>
+                <th>Most Recent Invoice Amount</th>
+                <th>No Outstanding Invoices</th>
+                <th>Total on outstanding invoices (£)</th>
+                <th>Total on paid invoices (£)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ foreach (var customer in Model.Customers)
+                {
+                    <tr>
+                        <td>@customer.Value.Name</td>
+                        <td>@customer.Value.MostRecentInvoiceRef</td>
+                        <td>@customer.Value.MostRecentInvoiceAmount</td>
+                        <td>@customer.Value.NumberOfOutstandingInvoices</td>
+                        <td>@customer.Value.TotalOfAllOutstandingInvoices</td>
+                        <td>@customer.Value.TotalOfAllPaidInvoices</td>
+                        <td class="addressBtnTd">
+                            <button id="getAddressBtn_@customer.Key" 
+                                    class="btn btn-primary addressBtn" 
+                                    name="@customer.Key" 
+                                    data-toggle="modal" 
+                                    data-target="#customerAddressModal">
+                                View Address
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+

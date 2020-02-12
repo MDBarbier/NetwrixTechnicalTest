@@ -1,14 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TechnicalTestApp.Database;
 using TechnicalTestApp.Models;
 
-namespace TechnicalTestApp.DataAccessLayer
+namespace TechnicalTestApp.ServiceLayer
 {
     public class InvoiceAccessMethods
     {
-        private readonly DatabaseContext _myDbContext;
+        private readonly IApplicationDatabaseContext _myDbContext;
 
-        public InvoiceAccessMethods(DatabaseContext databaseContext)
+        public InvoiceAccessMethods(IApplicationDatabaseContext databaseContext)
         {
             _myDbContext = databaseContext;
         }
@@ -68,7 +69,7 @@ namespace TechnicalTestApp.DataAccessLayer
         {
             return _myDbContext.Invoices
                 .Where(invoice => invoice.CustomerId == customerId)
-                .OrderBy(invoice => invoice.InvoiceDate)
+                .OrderByDescending(invoice => invoice.InvoiceDate)
                 .Select(invoice => invoice.InvoiceId)
                 .FirstOrDefault();
         }

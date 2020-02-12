@@ -1,6 +1,6 @@
-﻿namespace TechnicalTestApp.Models
+﻿namespace TechnicalTestApp.ViewModels
 {
-    public class CustomerData
+    public class CustomerViewModel
     {
         public string Name { get; set; }
         public int CustomerId { get; set; }

@@ -4,25 +4,16 @@
     ViewData["Title"] = "Netwrix technical test app";
 }
 
-    <div class="text-center">
-        <h1 class="display-4">Invoice Data Application</h1>
-        <h3>Total number of paid invoices held: @Model.TotalPaidInvoiceCount</h3>
-        <h3>Total GBP received from invoices paid: @Model.PaidInvoiceTotal</h3>
-    </div>
+@section Scripts {
 
+    <script src="@Url.Content("~/js/HomeJQuery.js")"></script>
+}
 
-<div class="text-center">
-
-    <h3>Customer Data</h3>
-
-    @{ foreach (var customer in Model.Customers)
-        {
-            <p>ID: @customer.Key</p>
-            <p>Most recent invoice ref: @customer.Value.MostRecentInvoiceRef</p>
-            <p>Most recent invoice amount: @customer.Value.MostRecentInvoiceAmount</p>
-            <p>Number of outstanding invoices: @customer.Value.NumberOfOutstandingInvoices</p>
-            <p>Total £ of all outstanding invoices: @customer.Value.TotalOfAllOutstandingInvoices</p>
-            <p>Total £ of all paid invoices: @customer.Value.TotalOfAllPaidInvoices</p>
-        }
-    }
+<div class="text-center mt-4 jumbotron">
+    <h1 class="display-4">Invoice Data Application</h1>
 </div>
+
+<partial name="~/Views/Home/_InvoiceSummaryPartial.cshtml" />
+<partial name="~/Views/Home/_CustomerInfoPartial.cshtml" />
+<partial name="~/Views/Home/_CustomerAddressModal.cshtml" />
+

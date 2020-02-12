@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using TechnicalTestApp.DataAccessLayer;
+using TechnicalTestApp.ServiceLayer;
 using TechnicalTestApp.Database;
 using TechnicalTestApp.ViewModels;
 
@@ -32,16 +32,10 @@ namespace TechnicalTestApp.Controllers
             return View(homeViewModel);
         }
 
-        [Route("Home/Address/{customerId}")]
-        public string GetCustomerAddress(int customerId)
-        {
-            //TODO: wire this up to a db method which gets customer address
-            return "12 Daniels Walk";
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            _logger.LogError("An error occurred");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

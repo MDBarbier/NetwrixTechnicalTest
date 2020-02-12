@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TechnicalTestApp.Models;
 
 namespace TechnicalTestApp.ViewModels
 {
@@ -7,6 +6,6 @@ namespace TechnicalTestApp.ViewModels
     {
         public decimal PaidInvoiceTotal { get; set; }
         public long TotalPaidInvoiceCount { get; set; }
-        public Dictionary<int, CustomerData> Customers { get; set; }
+        public Dictionary<int, CustomerViewModel> Customers { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TechnicalTestApp.Models;
 using TechnicalTestApp.Database;
-using TechnicalTestApp.DataAccessLayer;
+using TechnicalTestApp.ServiceLayer;
 
 namespace TechnicalTestApp.UnitTests
 {
