@@ -18,7 +18,9 @@ namespace TechnicalTestApp.ServiceLayer
 
         public abstract long GetNumberOfOutstandingInvoicesForCustomer(int customerId);
 
-        public abstract decimal GetAmountOwedOnInvoices(int customerId, bool paidOnly);
+        public abstract decimal GetAmountOwedOnInvoices(int customerId);
+
+        public abstract decimal GetAmountPaidOnInvoices(int customerId);
 
         public abstract int GetMostRecentInvoiceRef(int customerId);
 

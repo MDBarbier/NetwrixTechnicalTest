@@ -57,14 +57,22 @@ namespace TechnicalTestApp.ServiceLayer
             return count;
         }
 
-        public decimal GetAmountOwedOnInvoices(int customerId, bool paidOnly)
+        public decimal GetAmountOwedOnInvoices(int customerId)
         {
             //Get all customer invoices
             var invoices = DbContext.Invoices.Where(invoice => invoice.CustomerId == customerId);
 
             //Return the sum of the value of all of them, or conditionally just the paid invoices
-            return paidOnly ? invoices.Where(invoice => invoice.IsPaid).Select(invoice => invoice.Value).AsEnumerable().Sum() :
-                              invoices.Select(invoice => invoice.Value).AsEnumerable().Sum();                                        
+            return invoices.Where(invoice => !invoice.IsPaid).Select(invoice => invoice.Value).AsEnumerable().Sum();                   
+        }
+
+        public decimal GetAmountPaidOnInvoices(int customerId)
+        {
+            //Get all customer invoices
+            var invoices = DbContext.Invoices.Where(invoice => invoice.CustomerId == customerId);
+
+            //Return the sum of the value of all of them, or conditionally just the paid invoices
+            return invoices.Where(invoice => invoice.IsPaid).Select(invoice => invoice.Value).AsEnumerable().Sum();
         }
 
         public int GetMostRecentInvoiceRef(int customerId)
@@ -80,7 +88,7 @@ namespace TechnicalTestApp.ServiceLayer
         {
             return DbContext.Invoices
                 .Where(invoice => invoice.CustomerId == customerId)
-                .OrderBy(invoice => invoice.InvoiceDate)
+                .OrderByDescending(invoice => invoice.InvoiceDate)
                 .Select(invoice => invoice.Value)
                 .FirstOrDefault();
         }

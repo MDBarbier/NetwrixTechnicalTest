@@ -38,8 +38,8 @@ namespace TechnicalTestApp.ServiceLayer
                 customerToAdd.MostRecentInvoiceRef = InvoiceAccessMethods.GetMostRecentInvoiceRef(customer.CustomerId);
                 customerToAdd.MostRecentInvoiceAmount = InvoiceAccessMethods.GetMostRecentInvoiceAmount(customer.CustomerId);
                 customerToAdd.NumberOfOutstandingInvoices = InvoiceAccessMethods.GetNumberOfOutstandingInvoicesForCustomer(customer.CustomerId);
-                customerToAdd.TotalOfAllOutstandingInvoices = InvoiceAccessMethods.GetAmountOwedOnInvoices(customer.CustomerId, false);
-                customerToAdd.TotalOfAllPaidInvoices = InvoiceAccessMethods.GetAmountOwedOnInvoices(customer.CustomerId, true);
+                customerToAdd.TotalOfAllOutstandingInvoices = InvoiceAccessMethods.GetAmountOwedOnInvoices(customer.CustomerId);
+                customerToAdd.TotalOfAllPaidInvoices = InvoiceAccessMethods.GetAmountPaidOnInvoices(customer.CustomerId);
 
                 customerDataList.Add(customer.CustomerId, customerToAdd);
             }
