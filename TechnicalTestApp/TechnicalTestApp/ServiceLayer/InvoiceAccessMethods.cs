@@ -5,24 +5,24 @@ using TechnicalTestApp.Models;
 
 namespace TechnicalTestApp.ServiceLayer
 {
-    public class InvoiceAccessMethods
+    public class InvoiceAccessMethods : IInvoiceAccessMethods
     {
-        private readonly IApplicationDatabaseContext _myDbContext;
+        public IApplicationDatabaseContext DbContext { get; }
 
         public InvoiceAccessMethods(IApplicationDatabaseContext databaseContext)
         {
-            _myDbContext = databaseContext;
+            DbContext = databaseContext;
         }
 
         public Invoice GetInvoiceById(int invoiceId)
         {
-            return _myDbContext.Invoices.Where(invoice => invoice.InvoiceId == invoiceId).FirstOrDefault();
+            return DbContext.Invoices.Where(invoice => invoice.InvoiceId == invoiceId).FirstOrDefault();
         }
 
         public long GetSumOfInvoicesHeld(bool paidInvoicesOnly)
         {
-            var invoices = paidInvoicesOnly ? _myDbContext.Invoices.Where(invoice => invoice.IsPaid).ToList() :
-                                            _myDbContext.Invoices.ToList();
+            var invoices = paidInvoicesOnly ? DbContext.Invoices.Where(invoice => invoice.IsPaid).ToList() :
+                                            DbContext.Invoices.ToList();
 
             long numInvoices = 0;
 
@@ -34,16 +34,16 @@ namespace TechnicalTestApp.ServiceLayer
             return numInvoices;
         }
 
-        internal decimal GetTotalFundsInvoiced()
+        public decimal GetTotalFundsInvoiced()
         {
-            return _myDbContext.Invoices.Where(invoice => invoice.IsPaid).Select(invoice => invoice.Value).AsEnumerable().Sum();
+            return DbContext.Invoices.Where(invoice => invoice.IsPaid).Select(invoice => invoice.Value).AsEnumerable().Sum();
         }
 
-        internal long GetNumberOfOutstandingInvoicesForCustomer(int customerId)
+        public long GetNumberOfOutstandingInvoicesForCustomer(int customerId)
         {
             long count = 0;
 
-            var outstandingInvoices = _myDbContext.Invoices.Where(invoice => !invoice.IsPaid)
+            var outstandingInvoices = DbContext.Invoices.Where(invoice => !invoice.IsPaid)
                                                            .Where(invoice => invoice.CustomerId == customerId)
                                                            .Select(invoice => invoice.Value);
 
@@ -55,28 +55,28 @@ namespace TechnicalTestApp.ServiceLayer
             return count;
         }
 
-        internal decimal GetAmountOwedOnInvoices(int customerId, bool paidOnly)
+        public decimal GetAmountOwedOnInvoices(int customerId, bool paidOnly)
         {
             //Get all customer invoices
-            var invoices = _myDbContext.Invoices.Where(invoice => invoice.CustomerId == customerId);
+            var invoices = DbContext.Invoices.Where(invoice => invoice.CustomerId == customerId);
 
             //Return the sum of the value of all of them, or conditionally just the paid invoices
             return paidOnly ? invoices.Where(invoice => invoice.IsPaid).Select(invoice => invoice.Value).AsEnumerable().Sum() :
                               invoices.Select(invoice => invoice.Value).AsEnumerable().Sum();                                        
         }
 
-        internal int GetMostRecentInvoiceRef(int customerId)
+        public int GetMostRecentInvoiceRef(int customerId)
         {
-            return _myDbContext.Invoices
+            return DbContext.Invoices
                 .Where(invoice => invoice.CustomerId == customerId)
                 .OrderByDescending(invoice => invoice.InvoiceDate)
                 .Select(invoice => invoice.InvoiceId)
                 .FirstOrDefault();
         }
 
-        internal decimal GetMostRecentInvoiceAmount(int customerId)
+        public decimal GetMostRecentInvoiceAmount(int customerId)
         {
-            return _myDbContext.Invoices
+            return DbContext.Invoices
                 .Where(invoice => invoice.CustomerId == customerId)
                 .OrderBy(invoice => invoice.InvoiceDate)
                 .Select(invoice => invoice.Value)

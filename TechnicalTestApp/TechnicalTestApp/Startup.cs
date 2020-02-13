@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TechnicalTestApp.Database;
+using TechnicalTestApp.ServiceLayer;
 
 namespace TechnicalTestApp
 {
@@ -26,6 +27,9 @@ namespace TechnicalTestApp
         {
             services.AddControllersWithViews();
             services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
+            services.AddSingleton<IApplicationDatabaseContext, DatabaseContext>();
+            services.AddTransient<ICustomerAccessMethods, CustomerAccessMethods>();
+            services.AddTransient<IInvoiceAccessMethods, InvoiceAccessMethods>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

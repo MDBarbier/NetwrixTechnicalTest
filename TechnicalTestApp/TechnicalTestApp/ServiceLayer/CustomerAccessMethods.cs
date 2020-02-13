@@ -6,25 +6,25 @@ using TechnicalTestApp.ViewModels;
 
 namespace TechnicalTestApp.ServiceLayer
 {
-    public class CustomerAccessMethods
+    public class CustomerAccessMethods : ICustomerAccessMethods
     {
-        private readonly IApplicationDatabaseContext _myDbContext;
+        public IApplicationDatabaseContext DbContext { get; }
 
         public CustomerAccessMethods(IApplicationDatabaseContext databaseContext)
         {
-            _myDbContext = databaseContext;
-        }
+            DbContext = databaseContext;            
+        }        
 
         public Customer GetCustomerById(int customerId)
         {
-            return _myDbContext.Customers.Where(customer => customer.CustomerId == customerId).FirstOrDefault();
+            return DbContext.Customers.Where(customer => customer.CustomerId == customerId).FirstOrDefault();
         }
 
         public Dictionary<int, CustomerViewModel> GetCustomers()
         {
-            var customers = _myDbContext.Customers.ToList();
+            var customers = DbContext.Customers.ToList();
             var customerDataList = new Dictionary<int, CustomerViewModel>();
-            var invoiceAccessMethods = new InvoiceAccessMethods(_myDbContext);
+            var invoiceAccessMethods = new InvoiceAccessMethods(DbContext);
 
             foreach (var customer in customers)
             {

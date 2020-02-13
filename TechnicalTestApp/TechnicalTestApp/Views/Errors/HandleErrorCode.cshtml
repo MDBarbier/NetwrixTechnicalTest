@@ -6,5 +6,9 @@
 <h1>Oops!</h1>
 
 <p>@ViewBag.ErrorMessage</p>
-<p>Original route: @ViewBag.RouteOfException</p>
+
+@if (!string.IsNullOrEmpty(ViewBag.RouteOfException))
+{
+    <p>Original route: @ViewBag.RouteOfException</p>
+}
 

@@ -10,13 +10,13 @@ namespace TechnicalTestApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private CustomerAccessMethods CustomerAccessMethods;
-        private InvoiceAccessMethods InvoiceAccessMethods;
+        private ICustomerAccessMethods CustomerAccessMethods;
+        private IInvoiceAccessMethods InvoiceAccessMethods;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IInvoiceAccessMethods invoiceAccessMethods, ICustomerAccessMethods customerAccessMethods)
         {            
-            CustomerAccessMethods = new CustomerAccessMethods(new DatabaseContext());
-            InvoiceAccessMethods = new InvoiceAccessMethods(new DatabaseContext());
+            CustomerAccessMethods = customerAccessMethods;
+            InvoiceAccessMethods = invoiceAccessMethods;
             _logger = logger;
         }
 

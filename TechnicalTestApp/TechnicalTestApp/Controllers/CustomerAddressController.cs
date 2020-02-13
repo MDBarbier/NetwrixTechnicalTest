@@ -10,9 +10,9 @@ namespace TechnicalTestApp.Controllers
     {
         private CustomerAccessMethods CustomerAccessMethods;
 
-        public CustomerAddressController()
+        public CustomerAddressController(IApplicationDatabaseContext databaseContext)
         {
-            CustomerAccessMethods = new CustomerAccessMethods(new DatabaseContext());
+            CustomerAccessMethods = new CustomerAccessMethods(databaseContext);
         }
             
         // GET: api/CustomerAddress/{customerId}

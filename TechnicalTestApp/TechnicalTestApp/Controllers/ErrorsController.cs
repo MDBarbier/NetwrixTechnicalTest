@@ -22,7 +22,9 @@ namespace TechnicalTestApp.Controllers
                     break;
                 default:
                     ViewBag.ErrorMessage = "500 internal server error";
-                    ViewBag.RouteOfException = statusCodeData.OriginalPath;
+                    
+                    if (statusCodeData != null)
+                        ViewBag.RouteOfException = statusCodeData.OriginalPath;
                     break;
             }
 
