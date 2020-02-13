@@ -1,14 +1,20 @@
-﻿
+﻿@model TechnicalTestApp.ViewModels.ErrorViewModel
+
 @{
     ViewData["Title"] = "Error500";
 }
 
 <h1>Oops!</h1>
 
-<p>@ViewBag.ErrorMessage</p>
+<p>@Model.ErrorMessage</p>
 
 @if (!string.IsNullOrEmpty(ViewBag.RouteOfException))
 {
-    <p>Original route: @ViewBag.RouteOfException</p>
+    <p>Original route: @Model.RouteOfException</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.RequestId))
+{
+    <p>Request ID: @Model.RequestId</p>
 }
 

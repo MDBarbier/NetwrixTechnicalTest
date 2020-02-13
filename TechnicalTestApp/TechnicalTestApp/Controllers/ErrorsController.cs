@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using TechnicalTestApp.ViewModels;
 
 namespace TechnicalTestApp.Controllers
 {
@@ -9,26 +11,28 @@ namespace TechnicalTestApp.Controllers
         public IActionResult HandleErrorCode(int statusCode)
         {
             var statusCodeData = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+            var errorViewModel = new ErrorViewModel()
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
 
             switch (statusCode)
             {
                 case 404:
-                    ViewBag.ErrorMessage = "404 Sorry that page could not be found!";
-                    ViewBag.RouteOfException = statusCodeData.OriginalPath;
+                    errorViewModel.ErrorMessage = "404 Sorry that page could not be found!";
+                    errorViewModel.RouteOfException = statusCodeData.OriginalPath;
                     break;
                 case 500:
-                    ViewBag.ErrorMessage = "500 internal server error";
-                    ViewBag.RouteOfException = statusCodeData.OriginalPath;
+                    errorViewModel.ErrorMessage = "500 internal server error";
+                    errorViewModel.RouteOfException = statusCodeData.OriginalPath;
                     break;
                 default:
-                    ViewBag.ErrorMessage = "500 internal server error";
-                    
-                    if (statusCodeData != null)
-                        ViewBag.RouteOfException = statusCodeData.OriginalPath;
+                    errorViewModel.ErrorMessage = "500 internal server error";                    
+                    if (statusCodeData != null) errorViewModel.RouteOfException = statusCodeData.OriginalPath;
                     break;
             }
 
-            return View();
+            return View(errorViewModel);
         }
     }
 }
