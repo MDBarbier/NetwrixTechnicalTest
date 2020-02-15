@@ -41,6 +41,10 @@ namespace TechnicalTestApp.Controllers
             return View(homeViewModel);
         }        
 
+        /// <summary>
+        /// Private method which consumes data from the database via the ServiceLayer and processes it into the format required for the home page
+        /// </summary>
+        /// <returns>Dictionary containing the customerId as the key, and a CustomerViewModel object as the value</returns>
         private Dictionary<int, CustomerViewModel> GetCustomers()
         {
             var customers = CustomerAccessMethods.GetAllCustomers();
@@ -75,6 +79,12 @@ namespace TechnicalTestApp.Controllers
             return customerDataList;
         }
 
+        /// <summary>
+        /// Get invoices for the specified customer from the supplied invoices
+        /// </summary>
+        /// <param name="customerId">the customer ID to look for</param>
+        /// <param name="Invoices">the group of invoices to check</param>
+        /// <returns>Dictionary containing the customerId as the key, and a CustomerViewModel object as the value</returns>
         private Dictionary<int, Invoice> GetInvoicesForCustomer(int customerId, Dictionary<int, Invoice> Invoices)
         {
             return Invoices.Values.Where(invoice => invoice.CustomerId == customerId).ToDictionary(invoice => invoice.InvoiceId, invoice => invoice);
@@ -87,14 +97,34 @@ namespace TechnicalTestApp.Controllers
                 .FirstOrDefault();
         }
 
+        /// <summary>
+        /// Get the number of outstanding invoices for the specified customer from the supplied invoices
+        /// </summary>
+        /// <param name="customerId">the customer ID to look for</param>
+        /// <param name="Invoices">the group of invoices to check</param>
+        /// <returns>A long which indicated the number of outstanding invoices</returns>
         private long GetNumberOfOutstandingInvoicesForCustomer(Dictionary<int, Invoice> Invoices)
         {
             return Invoices.Values.Where(i => !i.IsPaid).LongCount();
         }
+
+        /// <summary>
+        /// Get the amount owed on outstanding invoices for the specified customer from the supplied invoices
+        /// </summary>
+        /// <param name="customerId">the customer ID to look for</param>
+        /// <param name="Invoices">the group of invoices to check</param>
+        /// <returns>decimal indicating the amount owed across all invoices</returns>
         private decimal GetAmountOwedOnOutstandingInvoicesForCustomer(Dictionary<int, Invoice> Invoices)
         {
             return Invoices.Values.Where(i => !i.IsPaid).Select(i => i.Value).AsEnumerable().Sum();
         }
+
+        /// <summary>
+        /// Get the total amount paid for the specified customer from the supplied invoices
+        /// </summary>
+        /// <param name="customerId">the customer ID to look for</param>
+        /// <param name="Invoices">the group of invoices to check</param>
+        /// <returns>decimal indicating the total amount paid by the customer</returns>
         private decimal GetAmountPaidOnInvoices(Dictionary<int, Invoice> Invoices)
         {
             return Invoices.Values.Where(i => i.IsPaid).Select(i => i.Value).AsEnumerable().Sum();

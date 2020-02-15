@@ -14,10 +14,8 @@ namespace TechnicalTestApp
         {
             Configuration = configuration;
 
-            using (var client = new DatabaseContext())
-            {                
-                client.Database.EnsureCreated();
-            }
+            using DatabaseContext client = new DatabaseContext();
+            client.Database.EnsureCreated();
         }
 
         public IConfiguration Configuration { get; }
