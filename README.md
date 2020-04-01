@@ -1,4 +1,4 @@
-# NetwrixTechnicalTest
+# SOLID-MVC-Demo
 
 ## Changelist
 
@@ -8,12 +8,14 @@ v1.1
 - Switched from IQueryable to Dictionary to improve performance
 - Implemented use of "AsNoTracking" on read-only database access methods to improve performance
 - Implemented a Seeding program to test large volumes of data in the database
+v1.2
+- Renamed repo
 
 ## Overview
 
-ASP.NET MVC project for the Netwrix technical test, which displays Customer and Invoice data.
+ASP.NET Core MVC project for demonstrating SOLID design principles. The application displays Customer and Invoice data held in a database.
 
-The applications uses ASP.NET Core 3.1, EF Core, JQuery and Bootstrap. 
+The applications uses ASP.NET Core 3.1, EF Core, JQuery and Bootstrap.
 
 ## Database
 
