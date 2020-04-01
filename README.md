@@ -8,6 +8,7 @@ v1.1
 - Switched from IQueryable to Dictionary to improve performance
 - Implemented use of "AsNoTracking" on read-only database access methods to improve performance
 - Implemented a Seeding program to test large volumes of data in the database
+
 v1.2
 - Renamed repo
 
